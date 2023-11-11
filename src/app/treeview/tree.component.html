@@ -12,19 +12,19 @@
         </li>
     </ng-container>
 </ul> -->
-<ul (drop)="drop($event, eleID)" (dragover)="allowDrop($event)" id="root">
+<ul (drop)="drop($event, eleID)" (dragover)="allowDrop($event)" [id]="rootId" [attr.data-node-id]="0">
     <ng-container *ngTemplateOutlet="Recursion; context: { list: data }"></ng-container>
 </ul>
 <ng-template #Recursion let-list="list">
     <ng-container *ngFor="let item of list; let i = index">
-        <li style="height: 1px;" class="re-order" [attr.data-order]="i"></li>
+        <li style="height: 1px;border: none;" class="re-order" [attr.data-order]="i"></li>
         <li [attr.data-parent]="item.id" [attr.data-seq]="i" class="list-item">
             <div (dragstart)="drag($event, item)" draggable="true" [id]="'id' + item.id" [attr.data-node]="item.id">
                 <i class="arrow" [ngClass]="{'right':!item.isopen,'down':item.isopen}" (click)="openChild($event, item)"
-                    *ngIf="item.children.length > 0"></i><span (click)="click($event, item)">{{ item.name
-                    }}k</span>
+                    *ngIf="item.children.length > 0"></i><span (click)="click($event, item)">{{ item.name }}</span>
             </div>
-            <ul *ngIf="item.isopen" [id]="'root'+item.id">
+            <ul [hidden]="!item.isopen" [id]="rootId+item.id" (drop)="drop($event, eleID)"
+                (dragover)="allowDrop($event)" [attr.data-node-id]="item.id">
                 <ng-container *ngTemplateOutlet="Recursion; context: { list: item.children }"></ng-container>
             </ul>
         </li>

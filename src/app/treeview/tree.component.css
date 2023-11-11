@@ -18,6 +18,7 @@ li.list-item div:hover {
 li div {
 
     padding: 10px;
+    border: 1px solid transparent;
 }
 
 .arrow {
